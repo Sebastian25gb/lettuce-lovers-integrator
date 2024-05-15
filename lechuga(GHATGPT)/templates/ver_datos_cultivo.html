@@ -1,0 +1,142 @@
+{% include("nav.html") %}  
+{% block title %}{% endblock %}
+  
+{% block content %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos del Cultivo</title>
+</head>
+<style>
+    table{
+        text-align: left;
+        margin-left: 10px;
+
+    }
+    tr{
+        height: 56pt;
+        padding-right: 32pt;
+    }
+    th{
+        margin-left: 10px;
+    }
+</style>
+<body>
+    <section style="padding-top: 100px;">
+        <h1 style="text-align: center;">Datos del Cultivo</h1>
+
+        <form action="{{ url_for('analisis_cultivo', id_cultivo=id_cultivo) }}" method="POST">
+            <button type="submit">Ver Análisis</button>
+            <label for="mes">Seleccionar Mes:</label>
+            <select name="mes" id="mes">
+                <option value="">Mes Actual</option>
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <!-- Agrega opciones para todos los meses -->
+            </select>
+        </form>
+
+        
+        <!-- Agregar un formulario para filtrar por fecha o mes -->
+        <form  action="" method="POST" oninput="submit()">
+            <label style="padding-left: 10px;" for="fecha"> Fecha:</label>
+            <input style=" color: #8CA884;  " type="date" id="fecha" name="fecha" value="{{ fecha_predeterminada }}">
+        </form>
+
+
+
+        <div class="table-container">
+            <table class="table table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th>Fecha</th>
+                  <th >Temperatura</th>
+                  <th >PH</th>
+                  <th >Presión</th>
+                  <th>Humedad</th>
+                  <th >Sustrato</th>
+                  <th >Electroresistencia</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for dato in datos_sensor %}
+                <tr >
+                  <td data-titulo="Fecha">{{ dato.fecha }}</td>
+                  <td data-titulo="Temperatura">{{ dato.temperatura }}</td>
+                  <td data-titulo="PH">{{ dato.ph }}</td>
+                  <td data-titulo="Presión">{{ dato.presion }}</td>
+                  <td data-titulo="Humedad">{{ dato.humedad }}</td>
+                  <td data-titulo="Sustrato">{{ dato.sustrato }}</td>
+                  <td data-titulo="Electroresistencia">{{ dato.electroresistencia }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+         </div>
+
+         <div class="col" style="margin-top:5% ;" id="logo">
+        
+            <a href="{{ url_for('mis_cultivos') }}" >
+              <img src="{{ url_for('static', filename='assets/misCultivo.png') }}"alt="" class="h-10 w-30" >
+            </a>
+        </div>
+
+
+    </section>
+    <style>
+
+#logo{
+            display: flex;
+            align-items: center;
+            text-align: center;  
+            justify-content: center; /* ajutar horizontalemente */
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 858px) {
+            .table-container{
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                align-items: center;
+            }
+
+            table tr {
+                width: 95%; /* 20px a cada lado */
+                display: flex;
+                height: auto;
+                flex-direction: column; /*mostrar datos uno al abajo del otro*/
+                border: 1px solid rgb(0, 19, 128);
+                padding: 0;
+                margin-bottom: 1em;
+            }
+
+            table thead{
+                display: none;
+            }
+
+            table td[data-titulo]{
+                display: flex;
+                
+            }
+
+            table td[data-titulo]::before{
+                content: attr(data-titulo);
+                width: 180px;
+            }
+        }
+
+    </style>
+</body>
+
+
+</html>
+{% endblock %}
